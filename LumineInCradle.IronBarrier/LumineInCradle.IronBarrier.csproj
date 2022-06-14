@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net461</TargetFramework>
+        <AssemblyName>LumineInCradle.IronBarrier</AssemblyName>
+        <Description>My first plugin</Description>
+        <Version>1.0.0</Version>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+        <PackageReference Include="BepInEx.Core" Version="5.*" />
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+        <PackageReference Include="UnityEngine.Modules" Version="2020.3.25" IncludeAssets="compile" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\LumineInCradle.Common\LumineInCradle.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Assembly-CSharp">
+        <HintPath>..\..\..\..\Games\AliceInCradle\AliceInCradle_v020s\AliceInCradle_Data\Managed\Assembly-CSharp.dll</HintPath>
+      </Reference>
+      <Reference Include="better">
+        <HintPath>..\..\..\..\Games\AliceInCradle\AliceInCradle_v020s\AliceInCradle_Data\Managed\better.dll</HintPath>
+      </Reference>
+      <Reference Include="pixelliner">
+        <HintPath>..\..\..\..\Games\AliceInCradle\AliceInCradle_v020s\AliceInCradle_Data\Managed\pixelliner.dll</HintPath>
+      </Reference>
+      <Reference Include="unsafeAssem">
+        <HintPath>..\..\..\..\Games\AliceInCradle\AliceInCradle_v020s\AliceInCradle_Data\Managed\unsafeAssem.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+</Project>

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net461</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\LumineInCradle.Always0721\LumineInCradle.Always0721.csproj" />
+      <ProjectReference Include="..\LumineInCradle.Common\LumineInCradle.Common.csproj" />
+      <ProjectReference Include="..\LumineInCradle.EggHarvest\LumineInCradle.EggHarvest.csproj" />
+      <ProjectReference Include="..\LumineInCradle.IronBarrier\LumineInCradle.IronBarrier.csproj" />
+      <ProjectReference Include="..\LumineInCradle.NoMosaic\LumineInCradle.NoMosaic.csproj" />
+      <ProjectReference Include="..\LumineInCradle.VerticalSync\LumineInCradle.VerticalSync.csproj" />
+    </ItemGroup>
+
+</Project>
