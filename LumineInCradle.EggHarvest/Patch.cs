@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using BepInEx.Logging;
 using HarmonyLib;
+using JetBrains.Annotations;
 using nel;
 
 namespace LumineInCradle.EggHarvest;
@@ -11,16 +13,16 @@ public static class Patch
 
 	private static Harmony _harmonyInstance;
 
-	public static void PatchMethods()
+	public static bool PatchMethods([NotNull] ManualLogSource logger)
 	{
 		if (_harmonyInstance != null)
 		{
-			return;
+			return true;
 		}
 
 		_harmonyInstance = new Harmony(LumineInCradle.PluginInfo.PLUGIN_GUID);
 
-		_harmonyInstance.PatchAll(typeof(SCN_Patch));
+		return _harmonyInstance.TryPatchAll(typeof(SCN_Patch), logger);
 	}
 
 	private static class SCN_Patch
@@ -30,7 +32,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool isBenchCmdEnable_Prefix(ref bool __result, string /* key */ __0)
 		{
-			if (Plugin.IsEnabled)
+			if (Plugin.Instance.IsEnabled)
 			{
 				switch (__0)
 				{

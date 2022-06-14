@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace LumineInCradle;
 
-public record GameVersion(int major, int minor, [CanBeNull] string revision)
+public record GameVersion(int Major, int Minor, [CanBeNull] string Revision)
 {
 
 	static GameVersion()
@@ -12,12 +12,12 @@ public record GameVersion(int major, int minor, [CanBeNull] string revision)
 		VersionRegex = new Regex(@"^(\d+)\.(\d+)([a-z]+)?$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 	}
 
-	public int major { get; } = major;
+	public int Major { get; } = Major;
 
-	public int minor { get; } = minor;
+	public int Minor { get; } = Minor;
 
 	[CanBeNull]
-	public string revision { get; } = revision;
+	public string Revision { get; } = Revision;
 
 	[NotNull]
 	public static GameVersion Parse(string versionString)

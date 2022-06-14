@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using BepInEx.Logging;
 using HarmonyLib;
 using JetBrains.Annotations;
 using nel;
@@ -13,16 +14,16 @@ public static class Patch
 
 	private static Harmony _harmonyInstance;
 
-	public static void PatchMethods()
+	public static bool PatchMethods([NotNull] ManualLogSource logger)
 	{
 		if (_harmonyInstance != null)
 		{
-			return;
+			return true;
 		}
 
 		_harmonyInstance = new Harmony(PluginInfo.PLUGIN_GUID);
 
-		_harmonyInstance.PatchAll(typeof(UiBenchMenu_Patch));
+		return _harmonyInstance.TryPatchAll(typeof(UiBenchMenu_Patch), logger);
 	}
 
 	private static class UiBenchMenu_Patch
@@ -39,7 +40,7 @@ public static class Patch
 		[HarmonyPostfix]
 		public static void initBenchMenu_Postfix()
 		{
-			if (!Plugin.IsEnabled)
+			if (!Plugin.Instance.IsEnabled)
 			{
 				return;
 			}
@@ -54,7 +55,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool get_alloc_masturb_Prefix(ref bool __result)
 		{
-			if (Plugin.IsEnabled)
+			if (Plugin.Instance.IsEnabled)
 			{
 				__result = true;
 				return false;
@@ -67,7 +68,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool set_alloc_masturb_Prefix()
 		{
-			if (Plugin.IsEnabled)
+			if (Plugin.Instance.IsEnabled)
 			{
 				var field = AccessTools.Field(typeof(UiBenchMenu), "several_flags");
 				var value = (int)field.GetValue(null);

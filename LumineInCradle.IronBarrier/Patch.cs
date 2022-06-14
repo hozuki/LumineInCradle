@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using BepInEx.Logging;
 using Better;
 using HarmonyLib;
+using JetBrains.Annotations;
 using m2d;
 using nel;
 using PixelLiner.PixelLinerLib;
@@ -16,16 +18,16 @@ public static class Patch
 
 	private static Harmony _harmonyInstance;
 
-	public static void PatchMethods()
+	public static bool PatchMethods([NotNull] ManualLogSource logger)
 	{
 		if (_harmonyInstance != null)
 		{
-			return;
+			return true;
 		}
 
 		_harmonyInstance = new Harmony(PluginInfo.PLUGIN_GUID);
 
-		_harmonyInstance.PatchAll(typeof(EpManager_Patch));
+		return _harmonyInstance.TryPatchAll(typeof(EpManager_Patch), logger);
 	}
 
 	// Also see EpSuppressor
@@ -36,7 +38,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool applyEpDamage_Prefix(EpManager __instance, ref bool __result, EpAtk /* Atk */ __0, M2Attackable /* AttackedBy */ __1, EPCATEG_BITS /* bits */ __2)
 		{
-			if (Plugin.IsEnabled)
+			if (Plugin.Instance.IsEnabled)
 			{
 				if (__instance.Pr.isMasturbating())
 				{
@@ -57,7 +59,7 @@ public static class Patch
 		[HarmonyPostfix]
 		public static void addMasturbateCountImmediate_Postfix(EpManager __instance)
 		{
-			if (!Plugin.IsEnabled)
+			if (!Plugin.Instance.IsEnabled)
 			{
 				return;
 			}
@@ -69,7 +71,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool addEggLayCount_Prefix(EpManager __instance, PrEggManager.CATEG /* categ */ __0, int /* cnt */ __1)
 		{
-			if (Plugin.IsEnabled)
+			if (Plugin.Instance.IsEnabled)
 			{
 				return false;
 			}
@@ -81,7 +83,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool addPeeCount_Prefix(EpManager __instance)
 		{
-			if (Plugin.IsEnabled)
+			if (Plugin.Instance.IsEnabled)
 			{
 				return false;
 			}
@@ -93,7 +95,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool get_masturbate_count_Prefix(EpManager __instance, ref int __result)
 		{
-			if (Plugin.IsEnabled)
+			if (Plugin.Instance.IsEnabled)
 			{
 				__result = 0;
 				return false;
@@ -106,7 +108,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool getExperienceCount_Prefix(EpManager __instance, ref int __result, EPCATEG /* categ */ __0)
 		{
-			if (Plugin.IsEnabled)
+			if (Plugin.Instance.IsEnabled)
 			{
 				__result = 0;
 				return false;
@@ -119,7 +121,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool getExperienceLevel_Prefix(EpManager __instance, ref float __result, EPCATEG /* categ */ __0)
 		{
-			if (Plugin.IsEnabled)
+			if (Plugin.Instance.IsEnabled)
 			{
 				__result = 0.0f;
 				return false;
@@ -132,7 +134,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool getOrgasmedIndividualTotal_Prefix(EpManager __instance, ref int __result)
 		{
-			if (Plugin.IsEnabled)
+			if (Plugin.Instance.IsEnabled)
 			{
 				__result = 0;
 				return false;
@@ -145,7 +147,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool getOrgasmedTotal_Prefix(EpManager __instance, ref int __result)
 		{
-			if (Plugin.IsEnabled)
+			if (Plugin.Instance.IsEnabled)
 			{
 				__result = 0;
 				return false;
@@ -158,7 +160,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool getLeadToOrgasmRatio_Prefix(EpManager __instance, ref float __result, EPCATEG /* target */ __0)
 		{
-			if (Plugin.IsEnabled)
+			if (Plugin.Instance.IsEnabled)
 			{
 				__result = 0.0f;
 				return false;
@@ -171,7 +173,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool recalcOrgasmable_Prefix(EpManager __instance)
 		{
-			if (!Plugin.IsEnabled)
+			if (!Plugin.Instance.IsEnabled)
 			{
 				return true;
 			}
@@ -186,7 +188,7 @@ public static class Patch
 		[HarmonyPostfix]
 		public static void quitOrasmSageTime_Postfix(EpManager __instance, bool /* cure_ser */ __0)
 		{
-			if (!Plugin.IsEnabled)
+			if (!Plugin.Instance.IsEnabled)
 			{
 				return;
 			}
@@ -202,7 +204,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool getNoelJuiceQualityAdd_Prefix(EpManager __instance, ref int __result)
 		{
-			if (Plugin.IsEnabled)
+			if (Plugin.Instance.IsEnabled)
 			{
 				// The Noel Juice (ew) quality modifier. This will be added to be grade base of item drop.
 				// Item grade is in range [0, 4] (5 grades). Input is clamped to the range so we can safely specify a very high grade addition.
@@ -217,7 +219,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool getNoelEggQualityAdd_Prefix(EpManager __instance, ref int __result)
 		{
-			if (Plugin.IsEnabled)
+			if (Plugin.Instance.IsEnabled)
 			{
 				// The Noel Egg (ew) quality modifier. This will be added to be grade base of item drop.
 				// Item grade is in range [0, 4] (5 grades). Input is clamped to the range so we can safely specify a very high grade addition.
@@ -232,7 +234,7 @@ public static class Patch
 		[HarmonyPrefix]
 		public static bool writeBinaryTo_Prefix(EpManager __instance, ByteArray /* Ba */ __0)
 		{
-			if (Plugin.IsEnabled)
+			if (Plugin.Instance.IsEnabled)
 			{
 				ClearCounters(__instance);
 			}
@@ -245,7 +247,7 @@ public static class Patch
 		[HarmonyPostfix]
 		public static void readBinaryFrom_Postfix(EpManager __instance, ByteArray /* Ba */ __0)
 		{
-			if (!Plugin.IsEnabled)
+			if (!Plugin.Instance.IsEnabled)
 			{
 				return;
 			}
