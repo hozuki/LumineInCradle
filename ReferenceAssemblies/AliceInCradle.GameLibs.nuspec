@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>AliceInCradle.GameLibs</id>
+    <version>0.20-s</version>
+    <authors>Alice in Cradle Modding</authors>
+    <owners>Alice in Cradle Modding</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <description>Game libraries for Alice in Cradle</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2022</copyright>
+    <tags>AliceInCradle Unity</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.6.1">
+        <dependency id="UnityEngine.Modules" version="2020.3.25" />
+      </group>
+    </dependencies>
+    <references>
+      <group targetFramework="net461">
+        <reference file="Assembly-CSharp.dll" />
+        <reference file="better.dll" />
+        <reference file="Better.UnsafeGeneric.dll" />
+        <reference file="criware.dll" />
+        <reference file="pixelliner.dll" />
+        <reference file="spine-unity.dll" />
+        <reference file="unsafeAssem.dll" />
+      </group>
+    </references>
+  </metadata>
+  <files>
+    <file src="ref\net461\Assembly-CSharp.dll" target="ref\net461" />
+    <file src="ref\net461\better.dll" target="ref\net461" />
+    <file src="ref\net461\Better.UnsafeGeneric.dll" target="ref\net461" />
+    <file src="ref\net461\criware.dll" target="ref\net461" />
+    <file src="ref\net461\pixelliner.dll" target="ref\net461" />
+    <file src="ref\net461\spine-unity.dll" target="ref\net461" />
+    <file src="ref\net461\unsafeAssem.dll" target="ref\net461" />
+    <file src="lib\net461\Assembly-CSharp.dll" target="lib\net461" />
+    <file src="lib\net461\better.dll" target="lib\net461" />
+    <file src="lib\net461\Better.UnsafeGeneric.dll" target="lib\net461" />
+    <file src="lib\net461\criware.dll" target="lib\net461" />
+    <file src="lib\net461\pixelliner.dll" target="lib\net461" />
+    <file src="lib\net461\spine-unity.dll" target="lib\net461" />
+    <file src="lib\net461\unsafeAssem.dll" target="lib\net461" />
+  </files>
+</package>

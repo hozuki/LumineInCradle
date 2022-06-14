@@ -21,15 +21,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Assembly-CSharp">
-        <HintPath>..\..\..\..\Games\AliceInCradle\AliceInCradle_v020s\AliceInCradle_Data\Managed\Assembly-CSharp.dll</HintPath>
-      </Reference>
-      <Reference Include="unsafeAssem">
-        <HintPath>..\..\..\..\Games\AliceInCradle\AliceInCradle_v020s\AliceInCradle_Data\Managed\unsafeAssem.dll</HintPath>
-      </Reference>
+      <ProjectReference Include="..\LumineInCradle.Common\LumineInCradle.Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LumineInCradle.Common\LumineInCradle.Common.csproj" />
+      <Reference Include="Assembly-CSharp">
+        <HintPath>..\ReferenceAssemblies\ref\net461\Assembly-CSharp.dll</HintPath>
+      </Reference>
+      <Reference Include="unsafeAssem">
+        <HintPath>..\ReferenceAssemblies\ref\net461\unsafeAssem.dll</HintPath>
+      </Reference>
     </ItemGroup>
 </Project>

@@ -26,16 +26,16 @@
 
     <ItemGroup>
       <Reference Include="Assembly-CSharp">
-        <HintPath>..\..\..\..\Games\AliceInCradle\AliceInCradle_v020s\AliceInCradle_Data\Managed\Assembly-CSharp.dll</HintPath>
+        <HintPath>..\ReferenceAssemblies\ref\net461\Assembly-CSharp.dll</HintPath>
       </Reference>
       <Reference Include="better">
-        <HintPath>..\..\..\..\Games\AliceInCradle\AliceInCradle_v020s\AliceInCradle_Data\Managed\better.dll</HintPath>
+        <HintPath>..\ReferenceAssemblies\ref\net461\better.dll</HintPath>
       </Reference>
       <Reference Include="pixelliner">
-        <HintPath>..\..\..\..\Games\AliceInCradle\AliceInCradle_v020s\AliceInCradle_Data\Managed\pixelliner.dll</HintPath>
+        <HintPath>..\ReferenceAssemblies\ref\net461\pixelliner.dll</HintPath>
       </Reference>
       <Reference Include="unsafeAssem">
-        <HintPath>..\..\..\..\Games\AliceInCradle\AliceInCradle_v020s\AliceInCradle_Data\Managed\unsafeAssem.dll</HintPath>
+        <HintPath>..\ReferenceAssemblies\ref\net461\unsafeAssem.dll</HintPath>
       </Reference>
     </ItemGroup>
 </Project>

@@ -20,6 +20,12 @@ Requirements:
 
 Select Unity Modules 2020.3.25(f1) as dependencies.
 
+Reference assemblies are stripped with [NStrip](https://github.com/BepInEx/NStrip) using options:
+
+```shell
+NStrip -p XXX.dll
+```
+
 ## Projects
 
 ### Common
