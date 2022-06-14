@@ -2,7 +2,7 @@
 
 A collection of simple mods for [Alice in Cradle](https://fantia.jp/fanclubs/24531).
 
-The mods uses [BepInEx](https://github.com/BepInEx/BepInEx) 5 as mod framework.
+The mods use [BepInEx](https://github.com/BepInEx/BepInEx) 5 as mod framework.
 
 To use the mods:
 
