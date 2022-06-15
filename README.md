@@ -1,5 +1,7 @@
 # [Lumine](https://genshin-impact.fandom.com/wiki/Traveler) in Cradle
 
+[![Build status](https://ci.appveyor.com/api/projects/status/6w8r4fnpr2hgcs4v?svg=true)](https://ci.appveyor.com/project/hozuki/lumineincradle)
+
 A collection of simple mods for [Alice in Cradle](https://fantia.jp/fanclubs/24531).
 
 The mods use [BepInEx](https://github.com/BepInEx/BepInEx) 5 as mod framework.
