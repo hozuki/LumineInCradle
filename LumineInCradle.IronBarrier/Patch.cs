@@ -1,12 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using BepInEx.Logging;
-using Better;
 using HarmonyLib;
 using JetBrains.Annotations;
 using m2d;
 using nel;
 using PixelLiner.PixelLinerLib;
-using static LumineInCradle.FieldHelper;
 using X = XX.X;
 
 namespace LumineInCradle.IronBarrier;
@@ -156,7 +154,7 @@ public static class Patch
 			return true;
 		}
 
-		[HarmonyPatch(typeof(EpManager), "getLeadToOrgasmRatio")]
+		[HarmonyPatch(typeof(EpManager), nameof(EpManager.getLeadToOrgasmRatio))]
 		[HarmonyPrefix]
 		public static bool getLeadToOrgasmRatio_Prefix(EpManager __instance, ref float __result, EPCATEG /* target */ __0)
 		{
@@ -171,6 +169,7 @@ public static class Patch
 
 		[HarmonyPatch(typeof(EpManager), nameof(EpManager.getOrgasmedTotal))]
 		[HarmonyPrefix]
+		[PatchingMayFail(PatchingMayFailAttribute.CommonReasons.MethodTooSmall)]
 		public static bool recalcOrgasmable_Prefix(EpManager __instance)
 		{
 			if (!Plugin.Instance.IsEnabled)
@@ -178,8 +177,7 @@ public static class Patch
 				return true;
 			}
 
-			Ases_orgasmable ??= AccessTools.FieldRefAccess<float[]>(typeof(EpManager), nameof(Ases_orgasmable));
-			X.ALL0(Ases_orgasmable(__instance));
+			X.ALL0(__instance.Ases_orgasmable);
 
 			return false;
 		}
@@ -194,10 +192,8 @@ public static class Patch
 			}
 
 			// Clear sage time
-			t_oazuke ??= AccessTools.FieldRefAccess<float>(typeof(EpManager), nameof(t_oazuke));
-			t_oazuke(__instance) = 1000.0f;
-			orgasm_oazuke ??= AccessTools.FieldRefAccess<bool>(typeof(EpManager), nameof(orgasm_oazuke));
-			orgasm_oazuke(__instance) = false;
+			__instance.t_oazuke = 1000.0f;
+			__instance.orgasm_oazuke = false;
 		}
 
 		[HarmonyPatch(typeof(EpManager), nameof(EpManager.getNoelJuiceQualityAdd))]
@@ -254,68 +250,42 @@ public static class Patch
 
 			ClearCounters(__instance);
 
-			__instance.Pr.ep = X.IntC(ep(__instance));
+			__instance.Pr.ep = X.IntC(__instance.ep);
 
 			__instance.flushCurrentBattle();
 		}
 
 		private static void ClearCounters(EpManager instance)
 		{
-			FastFieldValueClear(instance, nameof(Atotal_exp), ref Atotal_exp);
-			FastFieldValueClear(instance, nameof(Atotal_orgasmed), ref Atotal_orgasmed);
-			FastFieldValueClear(instance, nameof(Ases_orgasmable), ref Ases_orgasmable);
-			FastFieldValueClear(instance, nameof(Osituation_orgasmed), ref Osituation_orgasmed);
-			FastFieldValueClear(instance, nameof(Oegg_layed), ref Oegg_layed);
+			X.ALL0(instance.Atotal_exp);
+			X.ALL0(instance.Atotal_orgasmed);
+			X.ALL0(instance.Ases_orgasmable);
 
-			FastFieldValueClear(instance, nameof(last_ex_count), ref last_ex_count);
-			FastFieldValueClear(instance, nameof(last_ex_count_temp), ref last_ex_count_temp);
-			FastFieldValueClear(instance, nameof(last_ex_multi_count), ref last_ex_multi_count);
-			FastFieldValueClear(instance, nameof(last_ex_multi_count_temp), ref last_ex_multi_count_temp);
-			FastFieldValueClear(instance, nameof(pee_count), ref pee_count);
-			FastFieldValueClear(instance, nameof(orgasm_individual_count), ref orgasm_individual_count);
-			FastFieldValueClear(instance, nameof(bt_exp_added), ref bt_exp_added);
-			FastFieldValueClear(instance, nameof(bt_orgasm), ref bt_orgasm);
-			FastFieldValueClear(instance, nameof(bt_applied), ref bt_applied);
-			FastFieldValueClear(instance, nameof(orgasm_oazuke), ref orgasm_oazuke);
-			FastFieldValueClear(instance, nameof(lead_to_orgasm), ref lead_to_orgasm);
-			FastFieldValueClear(instance, nameof(cure_ep_after_orgasm), ref cure_ep_after_orgasm);
-			FastFieldValueClear(instance, nameof(cure_ep_after_orgasm_one), ref cure_ep_after_orgasm_one);
-			FastFieldValueClear(instance, nameof(t_oazuke), ref t_oazuke, -1.0f);
-			FastFieldValueClear(instance, nameof(ep), ref ep);
-			FastFieldValueClear(instance, nameof(t_crack_cure), ref t_crack_cure);
-			FastFieldValueClear(instance, nameof(multiple_orgasm), ref multiple_orgasm);
-			FastFieldValueClear(instance, nameof(crack_cure_count), ref crack_cure_count);
-			FastFieldValueClear(instance, nameof(crack_cure_once), ref crack_cure_once);
-			FastFieldValueClear(instance, nameof(t_sage), ref t_sage);
-			FastFieldValueClear(instance, nameof(t_lock), ref t_lock);
+			instance.Osituation_orgasmed.Clear();
+			instance.Oegg_layed.Clear();
+
+			instance.last_ex_count = 0;
+			instance.last_ex_count_temp = 0;
+			instance.last_ex_multi_count = 0;
+			instance.last_ex_multi_count_temp = 0;
+			instance.pee_count = 0;
+			instance.orgasm_individual_count = 0;
+			instance.bt_exp_added = 0;
+			instance.bt_orgasm = 0;
+			instance.bt_applied = 0;
+			instance.orgasm_oazuke = false;
+			instance.lead_to_orgasm = 0;
+			instance.cure_ep_after_orgasm = 0.0f;
+			instance.cure_ep_after_orgasm_one = 0.0f;
+			instance.t_oazuke = -1.0f;
+			instance.ep = 0.0f;
+			instance.t_crack_cure = 0.0f;
+			instance.multiple_orgasm = 0;
+			instance.crack_cure_count = 0;
+			instance.crack_cure_once = 0;
+			instance.t_sage = 0.0f;
+			instance.t_lock = 0.0f;
 		}
-
-		private static AccessTools.FieldRef<object, byte[]> Atotal_exp;
-		private static AccessTools.FieldRef<object, int[]> Atotal_orgasmed;
-		private static AccessTools.FieldRef<object, float[]> Ases_orgasmable;
-		private static AccessTools.FieldRef<object, BDic<string, int>> Osituation_orgasmed;
-		private static AccessTools.FieldRef<object, BDic<PrEggManager.CATEG, int>> Oegg_layed;
-		private static AccessTools.FieldRef<object, int> last_ex_count;
-		private static AccessTools.FieldRef<object, int> last_ex_count_temp;
-		private static AccessTools.FieldRef<object, int> last_ex_multi_count;
-		private static AccessTools.FieldRef<object, int> last_ex_multi_count_temp;
-		private static AccessTools.FieldRef<object, int> pee_count;
-		private static AccessTools.FieldRef<object, int> orgasm_individual_count;
-		private static AccessTools.FieldRef<object, EPCATEG_BITS> bt_exp_added;
-		private static AccessTools.FieldRef<object, EPCATEG_BITS> bt_orgasm;
-		private static AccessTools.FieldRef<object, EPCATEG_BITS> bt_applied;
-		private static AccessTools.FieldRef<object, bool> orgasm_oazuke;
-		private static AccessTools.FieldRef<object, EPCATEG_BITS> lead_to_orgasm;
-		private static AccessTools.FieldRef<object, float> cure_ep_after_orgasm;
-		private static AccessTools.FieldRef<object, float> cure_ep_after_orgasm_one;
-		private static AccessTools.FieldRef<object, float> t_oazuke;
-		private static AccessTools.FieldRef<object, float> ep;
-		private static AccessTools.FieldRef<object, float> t_crack_cure;
-		private static AccessTools.FieldRef<object, int> multiple_orgasm;
-		private static AccessTools.FieldRef<object, int> crack_cure_count;
-		private static AccessTools.FieldRef<object, int> crack_cure_once;
-		private static AccessTools.FieldRef<object, float> t_sage;
-		private static AccessTools.FieldRef<object, float> t_lock;
 
 	}
 

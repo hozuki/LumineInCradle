@@ -29,13 +29,6 @@ public static class Patch
 	private static class UiBenchMenu_Patch
 	{
 
-		static UiBenchMenu_Patch()
-		{
-			BenchCmdTypeCache = new CachedClassObject<Type>();
-			BenchCmdCtorCache = new CachedClassObject<ConstructorInfo>();
-			ACmdFieldCache = new CachedClassObject<FieldInfo>();
-		}
-
 		[HarmonyPatch(typeof(UiBenchMenu), nameof(UiBenchMenu.initBenchMenu))]
 		[HarmonyPostfix]
 		public static void initBenchMenu_Postfix()
@@ -85,43 +78,16 @@ public static class Patch
 		// https://www.strathweb.com/2018/10/no-internalvisibleto-no-problem-bypassing-c-visibility-rules-with-roslyn/
 		private static void ModifyCommands()
 		{
-			var classInfo = typeof(UiBenchMenu);
-			var acmdField = ACmdFieldCache.GetValueOrSetBy(classInfo, ci => ci.GetField("ACmd", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic));
-
-			var benchCmds = acmdField.GetValue(null) as object[];
-
 			// cure_ep (masturbate)
-			benchCmds[3] = CreateNewBenchCmd("cure_ep", pr => !pr.isMasturbating(), false, false);
+			UiBenchMenu.ACmd[3] = CreateNewBenchCmd("cure_ep", pr => !pr.isMasturbating(), false, false);
 			// cure_egged (lay egg)
-			benchCmds[4] = CreateNewBenchCmd("cure_egged", pr => true, false, false);
-
-			acmdField.SetValue(null, benchCmds);
+			UiBenchMenu.ACmd[4] = CreateNewBenchCmd("cure_egged", pr => true, false, false);
 		}
 
-		private static object CreateNewBenchCmd([NotNull] string key, [NotNull] Func<PR, bool> canUsePredicate, bool canSetAuto, bool onlyInSafeArea)
+		private static UiBenchMenu.BenchCmd CreateNewBenchCmd([NotNull] string key, [NotNull] Func<PR, bool> canUsePredicate, bool canSetAuto, bool onlyInSafeArea)
 		{
-			var assembly = Assembly.GetAssembly(typeof(UiBenchMenu));
-			var classInfo = BenchCmdTypeCache.GetValueOrSetBy(assembly, asm => asm.GetType("nel.UiBenchMenu+BenchCmd"));
-
-			// Alternative:
-			// notice the (partial) assembly qualified name here:
-			// var classInfo = Type.GetType("nel.UiBenchMenu+BenchCmd, Assembly-CSharp");
-			var ctor = BenchCmdCtorCache.GetValueOrSetBy(classInfo, ci => ci.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, BenchCmdCtorParamTypes, Array.Empty<ParameterModifier>()));
-
-			var obj = ctor.Invoke(new object[] { key, canUsePredicate, canSetAuto, onlyInSafeArea });
-
-			return obj;
+			return new UiBenchMenu.BenchCmd(key, canUsePredicate, canSetAuto, onlyInSafeArea);
 		}
-
-		[NotNull]
-		private static readonly Type[] BenchCmdCtorParamTypes =
-		{
-			typeof(string), typeof(Func<PR, bool>), typeof(bool), typeof(bool),
-		};
-
-		private static readonly CachedClassObject<Type> BenchCmdTypeCache;
-		private static readonly CachedClassObject<ConstructorInfo> BenchCmdCtorCache;
-		private static readonly CachedClassObject<FieldInfo> ACmdFieldCache;
 
 	}
 
