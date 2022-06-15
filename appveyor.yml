@@ -24,10 +24,10 @@ artifacts:
 deploy:
   - provider: GitHub
     artifact: binaries
-    release: binaries v$(APPVEYOR_BUILD_VERSION)
+    #release: binaries v$(APPVEYOR_BUILD_VERSION)
     description: Binaries release
     draft: false
-    prerelease: true
+    prerelease: false
     auth_token:
       secure: F70O6SZTSCq38GRXMw0oflqtSR44IOm2uzzn417S4++VphBkgxGEY8mdG3cCxBBO
     on:
