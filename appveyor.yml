@@ -15,9 +15,11 @@ dotnet_csproj:
   informational_version: '{version}'
 before_build:
   - ps: dotnet nuget add source https://nuget.bepinex.dev/v3/index.json -n BepInEx
-  - ps: nuget restore
+  - ps: dotnet nuget restore
+after_build:
+  - cmd: 7z a binaries-%APPVEYOR_BUILD_VERSION%.zip Meta\bin\%Configuration%\%mod_net_framework%\LumineInCradle.*
 artifacts:
-  - path: Meta\bin\$(Configuration)\$(mod_net_framework)\LumineInCradle.*
+  - path: binaries-$(APPVEYOR_BUILD_VERSION).zip
     name: binaries
 deploy:
   - provider: GitHub
